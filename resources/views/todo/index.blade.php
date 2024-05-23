@@ -11,3 +11,61 @@
     </div>
 @endsection
 
+@section('script')
+<script>
+    let inactivityTimeout;
+    const inactivityPeriod = 1 * 10 * 1000; // reset in 10 seconds inactivity
+
+    function resetTodoList() {
+        // Send ajax request to reset To Do list
+        $.ajax({
+            type: "POST",
+            url: "/reset-session",
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                console.log("To Do list reset due to inactivity");
+            },
+            error: function(xhr, status, error) {
+                console.error("Error resetting To Do list due to inactivity:", error);
+            }
+        });
+    }
+
+    function startInactivityTimer() {
+        clearTimeout(inactivityTimeout);
+        inactivityTimeout = setTimeout(resetTodoList, inactivityPeriod);
+    }
+
+    // Start timer on user activity
+    $(document).on('mousemove keydown', function() {
+        startInactivityTimer();
+    });
+
+    // Initial timer
+    startInactivityTimer();
+</script>
+<script>
+    $(document).on('change', 'input[type="checkbox"]', function() {
+    var taskId = $(this).data('task-id');
+    var isCompleted = this.checked ? 1 : 0;
+
+    $.ajax({
+        type: 'POST',
+        url: '/update',
+        data: {
+            task_id: taskId,
+            is_completed: isCompleted,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            console.log('Task status updated successfully.');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error updating task status:', error);
+        }
+    });
+});
+</script>
+@endsection
