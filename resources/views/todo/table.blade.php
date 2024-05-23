@@ -1,6 +1,11 @@
  <table class="table">
+    <h5> To Do List </h5>
     <thead>
-        <tr><h5>To Do List</h5></tr>
+        <tr>
+            <th>Name</th>
+            <th>Complete</th>
+            <th>Action</th>
+        </tr>
     </thead>
     <tbody>
         @php
@@ -8,7 +13,15 @@
         @endphp
         @foreach($tasks as $task)
         <tr>
-            <td>{{ $task['name'] }} {{ $task['is_completed'] }}</td>
+            <td>
+                {{ $task['name'] }}
+            </td>
+            <td>
+                <input type="checkbox" {{ $task['is_completed'] ? 'checked' : '' }} >
+            </td>
+            <td>
+                <!-- add delete btn here -->
+            </td>
         </tr>
         @endforeach
     </tbody>
