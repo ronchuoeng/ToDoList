@@ -11,13 +11,13 @@
         @php
             $tasks = array_reverse($tasks); // Reverse the tasks array
         @endphp
-        @foreach($tasks as $task)
+        @foreach($tasks as $key => $task)
         <tr>
             <td>
                 {{ $task['name'] }}
             </td>
             <td>
-                <input type="checkbox" {{ $task['is_completed'] ? 'checked' : '' }} >
+                <input type="checkbox" data-task-id="{{ $key }}" {{ $task['is_completed'] ? 'checked' : '' }} >
             </td>
             <td>
                 <!-- add delete btn here -->

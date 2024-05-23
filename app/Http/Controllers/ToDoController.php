@@ -26,8 +26,20 @@ class ToDoController extends Controller
         $todo_list[] = ["name" => $request["new_task"], "is_completed" => 0];
         $request->session()->put("tasks", $todo_list);
 
-
         return back();
+    }
+
+    public function update(Request $request)
+    {
+        $todo_list = $request->session()->get("tasks");
+        $task_id = $request->task_id;
+        $is_completed = $request->is_completed;
+
+        $todo_list[$task_id]['is_completed'] = $is_completed;
+        // Change the session data here
+        $request->session()->put("tasks", $todo_list);
+
+        return response()->json(['success' => true]);
     }
 
     public function reset(Request $request)
