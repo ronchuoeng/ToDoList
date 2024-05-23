@@ -15,7 +15,8 @@ use App\Http\Controllers\ToDoController;
 */
 
 Route::get('/', [ToDoController::class, 'index'])->name('index');
+Route::post('/new-task/store', [ToDoController::class, 'store'])->name('store');
+Route::post('/reset-session', [ToDoController::class, 'reset'])->name('reset.session');
 // Route::get('/', function () {
 //     return view('todo.index');
 // });
-// Route::post('/new-task', [ToDoController::class, 'newTask'])
