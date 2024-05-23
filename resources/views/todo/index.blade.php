@@ -51,6 +51,7 @@
         var taskId = $(this).data('task-id');
         var isCompleted = this.checked ? 1 : 0;
 
+        // Send ajax request to update To Do list
         $.ajax({
             type: 'POST',
             url: '/update',
@@ -71,7 +72,7 @@
     $(document).on('click', '.delete-task', function() {
         var taskId = $(this).data('task-id');
 
-        // Send AJAX request to delete task
+        // Send ajax request to delete task
         $.ajax({
             type: 'DELETE',
             url: '/remove',
@@ -80,6 +81,7 @@
                 _token: '{{ csrf_token() }}'
             },
             success: function(response) {
+                // Delete without reloading page
                 $('tr[data-task-id="' + taskId + '"]').remove();
                 console.log('Task deleted successfully.');
             },
