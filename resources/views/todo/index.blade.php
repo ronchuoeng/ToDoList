@@ -48,24 +48,45 @@
 </script>
 <script>
     $(document).on('change', 'input[type="checkbox"]', function() {
-    var taskId = $(this).data('task-id');
-    var isCompleted = this.checked ? 1 : 0;
+        var taskId = $(this).data('task-id');
+        var isCompleted = this.checked ? 1 : 0;
 
-    $.ajax({
-        type: 'POST',
-        url: '/update',
-        data: {
-            task_id: taskId,
-            is_completed: isCompleted,
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(response) {
-            console.log('Task status updated successfully.');
-        },
-        error: function(xhr, status, error) {
-            console.error('Error updating task status:', error);
-        }
+        $.ajax({
+            type: 'POST',
+            url: '/update',
+            data: {
+                task_id: taskId,
+                is_completed: isCompleted,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                console.log('Task status updated successfully.');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating task status:', error);
+            }
+        });
     });
-});
+
+    $(document).on('click', '.delete-task', function() {
+        var taskId = $(this).data('task-id');
+
+        // Send AJAX request to delete task
+        $.ajax({
+            type: 'DELETE',
+            url: '/remove',
+            data: {
+                task_id: taskId,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                $('tr[data-task-id="' + taskId + '"]').remove();
+                console.log('Task deleted successfully.');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error deleting task:', error);
+            }
+        });
+    });
 </script>
 @endsection
